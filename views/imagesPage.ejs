@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="index.css">
+	<title>Image Uploading</title>
+	
+</head>
+
+<body>
+	<h1>Upload your Image</h1>
+	<hr>
+	<div class="container">
+		<div class="form">
+		<form action="/" method="POST" id="image_upload" enctype="multipart/form-data">
+			<div>
+				<label for="name">Image Title</label>
+				<input type="text" id="name" placeholder="Name"
+					value="" name="name" required>
+			</div>
+			<div>
+				<label for="desc">Image Description</label>
+				<textarea  id="desc" name="desc" value="" rows="2"
+						placeholder="Description" required> 
+				</textarea>
+			</div>
+			<div>
+				<label for="image">Upload Image</label>
+				<input type="file" id="image"
+					name="image" value=""  required hidden>
+			</div>
+			<div>
+				<button type="submit" id="upload">Submit</button>
+			</div>
+		</form>
+	</div>
+
+	<hr>
+	<div class="sec" style="overflow: auto; height: 100%">
+
+	<h1>Uploaded Images</h1>
+    <div>
+        <% items.forEach(function(image) { %>
+        <div>
+            <div>
+                <img src="<%=image.img %>">
+                <div>
+                    <h5><%= image.name %></h5>
+                      <p><%= image.desc %></p>
+                  </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+<script>
+const image = document.getElementById('image');
+const upload = document.getElementById('upload');
+image.onchange = async(e) =>{
+	try {
+		
+		const file = e.target.files[0];
+		const form = document.getElementById('image_upload')
+		const data = new FormData();
+		data.append('file', file);
+		data.append('upload_preset', 'oralgdth');
+		upload.ariaDisabled = true;
+		let res = await fetch('https://api.cloudinary.com/v1_1/dok0zmz2e/image/upload', {
+            method: 'post',
+            body: data
+        })
+        const urlData = await res.json();
+		const input = document.createElement('input');
+		input.hidden = true;
+		input.value = urlData.url;
+		input.name = "file";
+		form.appendChild(input);
+		uploading = false;
+		upload.ariaDisabled = false;
+	} catch (error) {
+		
+	}
+}
+</script>
+</body>
+
+</html>

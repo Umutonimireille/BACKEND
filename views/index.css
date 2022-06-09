@@ -1,0 +1,24 @@
+*{
+    padding: 0.5em;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    display: flex;
+    justify-content:center;
+   background-color: pink;
+   width:60vw;
+   height:60vh;
+   margin-left:5em;
+ 
+}
+
+.form >input {
+    display: block;
+
+}
+.sec{
+    width:40vw;
+    height:40vh;
+}
